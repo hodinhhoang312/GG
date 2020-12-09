@@ -1,0 +1,59 @@
+////
+            set<int> s;
+            map<int, int> mp;
+            s.insert ( a[i] );
+            ++mp[a[i]];
+
+            auto x = s.begin();
+            int low = 0;
+            int high = 0;
+            int equa = 1;
+
+            ll be = 0, lon = 0, bang = a[i];
+
+            for ( int j = i - 1; j > i - k; --j )
+                {
+                    int tmp = *x;
+                    if ( a[j] == tmp )
+                        ++equa, ++mp[a[j]], bang += a[j];
+                    if ( a[j] > tmp )
+                        {
+                            ++high;
+                            lon += a[j];
+                            s.insert ( a[j] );
+                            ++mp[a[j]];
+                            if ( high > low + equa )
+                                {
+                                    ++x;
+                                    int add = mp[*x];
+                                    low += equa;
+                                    be += bang;
+                                    high -= add;
+                                    lon -= add * ( *x );
+                                    equa = add;
+                                    bang = add * ( *x );
+                                }
+                        }
+                    else if ( a[j] < tmp )
+                        {
+                            ++low;
+                            be += a[j];
+                            s.insert ( a[j] );
+                            ++mp[a[j]];
+                            if ( low > high + equa )
+                                {
+                                    --x;
+                                    int add = mp[*x];
+                                    high += equa;
+                                    lon += bang;
+                                    low -= add;
+                                    be -= add * ( *x );
+                                    equa = add;
+                                    bang = equa * ( *x );
+                                }
+                        }
+                }
+
+            ll trungvi = *x;
+            ll sobuocchenhlech = abs ( trungvi * low - be ) + abs ( trungvi * high - lon ) ;
+//
